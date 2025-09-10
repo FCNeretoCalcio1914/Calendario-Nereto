@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario</title>
+  <script>
+    // Appena la pagina si carica, tenta subito di aprire il calendario
+    window.onload = function() {
+      window.location.href = "webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y";
+    };
+  </script>
+</head>
+<body>
+  <h1>Apertura calendario…</h1>
+  <p>Se non parte automaticamente, <a href="webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y">clicca qui per aprirlo manualmente</a>.</p>
+</body>
+</html>
