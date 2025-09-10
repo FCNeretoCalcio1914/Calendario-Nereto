@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calendario pubblico</title>
+  <script>
+    (function(){
+      var webcal = "webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y";
+      var httpsCal = webcal.replace(/^webcal:\/\//i, "https://");
+      var isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+
+      if (isApple) {
+        // Primo tentativo: redirect diretto
+        window.location.href = webcal;
+
+        // Secondo tentativo (alcuni browser rispondono meglio con iframe)
+        setTimeout(function(){
+          try {
+            var iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = webcal;
+            document.body.appendChild(iframe);
+          } catch(e){}
+        }, 800);
+
+        // Mostra fallback dopo qualche secondo se non è andato a buon fine
+        setTimeout(function(){
+          document.getElementById("fallback").style.display = "block";
+        }, 2500);
+
+      } else {
+        // Non-Apple: mostra subito il fallback con il link https -> .ics
+        document.getElementById("fallback").style.display = "block";
+        document.getElementById("icsLink").href = httpsCal;
+        document.getElementById("icsLink").textContent = "Scarica il file .ics";
+      }
+    })();
+  </script>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial; padding:20px; max-width:800px}
+    pre{background:#f5f5f5;padding:8px;border-radius:6px;overflow:auto}
+  </style>
+</head>
+<body>
+  <h1>Calendario pubblico</h1>
+  <p>Se usi iPhone/iPad/Mac la schermata per iscriverti dovrebbe aprirsi automaticamente. Se non succede, usa il link qui sotto.</p>
+
+  <div id="fallback" style="display:none; margin-top:12px;">
+    <p><strong>Fallback:</strong></p>
+    <ul>
+      <li><a id="icsLink" href="#" target="_blank" rel="noopener">Scarica il file .ics</a> e aprilo con il calendario.</li>
+      <li>Oppure copia questo link e incollalo nel campo di aggiunta calendario (sostituisci <code>https://</code> con <code>webcal://</code> se il tuo calendario lo richiede):</li>
+    </ul>
+    <pre>webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y</pre>
+  </div>
+</body>
+</html>
