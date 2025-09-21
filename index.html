@@ -4,37 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Calendario pubblico</title>
-  <script>
-    (function(){
-      var webcal = "webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y";
-      var httpsCal = webcal.replace(/^webcal:\/\//i, "https://");
-      var isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-
-      if (isApple) {
-        // Redirect automatico per dispositivi Apple
-        window.location.href = webcal;
-        setTimeout(function(){
-          try {
-            var iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.src = webcal;
-            document.body.appendChild(iframe);
-          } catch(e){}
-        }, 800);
-        setTimeout(function(){
-          document.getElementById("fallback").style.display = "block";
-        }, 2500);
-      } else {
-        // Mostra subito il fallback per Android/PC
-        document.getElementById("fallback").style.display = "block";
-        document.getElementById("icsLink").href = httpsCal;
-        document.getElementById("icsLink").textContent = "Scarica il file .ics";
-        // Aggiorna anche il link per Google Calendar
-        document.getElementById("gcalLink").href =
-          "https://calendar.google.com/calendar/r/settings/addbyurl?url=" + encodeURIComponent(httpsCal);
-      }
-    })();
-  </script>
   <style>
     body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial; padding:20px; max-width:800px}
     pre{background:#f5f5f5;padding:8px;border-radius:6px;overflow:auto}
@@ -52,23 +21,43 @@
 </head>
 <body>
   <h1>Calendario pubblico</h1>
-  <p>Se usi iPhone/iPad/Mac la schermata per iscriverti dovrebbe aprirsi automaticamente.  
-     Se non succede, o se usi Android/PC, usa i link qui sotto.</p>
+  <p>Se usi iPhone/iPad/Mac l’iscrizione al calendario dovrebbe aprirsi automaticamente.</p>
 
   <div id="fallback" style="display:none; margin-top:12px;">
-    <p><strong>Per Android / Google Calendar:</strong></p>
-    <a id="gcalLink" class="button" href="#" target="_blank" rel="noopener">
+    <p><strong>Per Android / PC:</strong></p>
+    <a id="gcalLink" class="button" target="_blank" rel="noopener">
       ➕ Aggiungi a Google Calendar
-    </a>
-
-    <p>Oppure puoi scaricare direttamente il file .ics:</p>
-    <a id="icsLink" class="button" href="#" target="_blank" rel="noopener">
+    </a><br>
+    <a id="icsLink" class="button" target="_blank" rel="noopener">
       ⬇️ Scarica il file .ics
     </a>
-
-    <p>Link completo da copiare se necessario:</p>
-    <pre>webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y</pre>
+    <p>Oppure copia questo link:</p>
+    <pre id="rawLink"></pre>
   </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var webcal = "webcal://p104-caldav.icloud.com/published/2/MjAxMjM0ODk4MjQyMDEyMyarwglhFPECpPXCQNqkzvrtTV-xodzu7pvLPdkvJw4yQduUQ6AykXgSmjHp_pnJ4xk6GCVolVyIOBusBZb7L-Y";
+    var httpsCal = webcal.replace(/^webcal:\/\//i, "https://");
+    var isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+
+    if (isApple) {
+      // Tentativo redirect immediato su iOS/macOS
+      window.location.href = webcal;
+      setTimeout(function () {
+        document.getElementById("fallback").style.display = "block";
+      }, 2500);
+    } else {
+      // Android / PC: mostra subito i link
+      document.getElementById("fallback").style.display = "block";
+    }
+
+    // Aggiorna link fallback
+    document.getElementById("gcalLink").href =
+      "https://calendar.google.com/calendar/r/settings/addbyurl?url=" + encodeURIComponent(httpsCal);
+    document.getElementById("icsLink").href = httpsCal;
+    document.getElementById("rawLink").textContent = webcal;
+  });
+  </script>
 </body>
 </html>
-
